@@ -1,5 +1,7 @@
 import { defineAgent } from "eve";
 
+import { coordinatorModel } from "./lib/models.js";
+
 export default defineAgent({
-  model: "anthropic/claude-sonnet-4.6",
+  model: coordinatorModel,
 });
