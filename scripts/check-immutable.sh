@@ -64,9 +64,9 @@ if [ -z "$SID" ]; then echo "FAIL: no session id from $RESP"; exit 1; fi
 echo "    session = $SID"
 
 # Stream until the coordinator's turn truly ends (finishReason "stop"), or time out.
-curl -sN --max-time 300 "$BASE/eve/v1/session/$SID/stream" > "$STREAM_OUT" &
+curl -sN --max-time 420 "$BASE/eve/v1/session/$SID/stream" > "$STREAM_OUT" &
 STREAM_PID=$!
-for i in $(seq 1 300); do
+for i in $(seq 1 420); do
   if grep -q '"finishReason":"stop"' "$STREAM_OUT" 2>/dev/null; then break; fi
   if ! kill -0 "$STREAM_PID" 2>/dev/null; then break; fi
   sleep 1

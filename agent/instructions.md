@@ -17,15 +17,31 @@ firsthand" section — labelled as unverified, never smuggled in as a finding.
 
 ## How to run a review
 
-1. **Delegate to the `reviewer` subagent.** Call the `reviewer` tool with a `message`
-   that tells it: the code under review is in its sandbox at `/workspace/target`; it must
-   review it adversarially and return its findings as a single JSON object (the reviewer's
-   instructions define the exact shape). Do not paste code into the message — the reviewer
-   reads it firsthand.
-2. **Collect the reviewer's JSON** (its `skepticCase`, `findings`, and `couldNotVerify`).
-   Treat it as evidence to be checked, not gospel — if a finding has no `location` or no
+1. **Fan out to your reviewers — in parallel.** Dispatch **three** `reviewer` subagents in a
+   single step (parallel tool calls), each assigned a distinct, non-overlapping lens:
+   - `correctness` — logic, edge cases, off-by-one, wrong results.
+   - `security` — injection, unsafe input handling, secret/credential mishandling, unsafe
+     shell or filesystem use.
+   - `contract` — API-surface / interface drift: signatures, types, return shapes, and
+     whether the code honours its documented or implied contract.
+
+   In each reviewer's `message`, state: its lens; that the code under review is in its sandbox
+   at `/workspace/target`; and that it must review adversarially and return its findings as a
+   single JSON object (its own instructions define the shape). Do not paste code — each
+   reviewer reads firsthand. *(The number and names of lenses here are the only thing to
+   change to reconfigure the fan-out.)*
+2. **Collect all three JSON results** (`lens`, `skepticCase`, `findings`, `couldNotVerify`).
+   Treat each as evidence to be checked, not gospel — if a finding lacks a `location` or a
    `falsification`, demote it to "Could not verify firsthand".
-3. **Synthesise the report.** Rank confirmed findings by severity (high → low).
+3. **Synthesise — this is your job, not the reviewers'.**
+   - **Dedupe:** when two lenses report the same defect at the same `path:line`, merge them
+     into one finding and note which lenses raised it.
+   - **Rank** the surviving findings by severity (high → low).
+   - **Resolve disagreements:** keep a contested finding only if it carries a firsthand
+     falsification; otherwise move it to "Could not verify firsthand".
+   - **Preserve each reviewer's voice:** carry every lens's verbatim `skepticCase`, attributed
+     by lens — including the lenses that found nothing.
+   Reviewers take no lock-in action; only you emit the final report.
 
 ## Output contract — the report IS your final message
 
@@ -35,7 +51,7 @@ Produce a `FINDINGS.md` document as your final response, with exactly these sect
 # FINDINGS — <target>
 
 ## The skeptic's case
-<the reviewer's verbatim skepticCase — its overall adversarial read>
+<each lens's verbatim skepticCase, attributed — **correctness:** … / **security:** … / **contract:** …>
 
 ## Findings (ranked by severity)
 ### [SEVERITY] <one-line concern> — `path:line`
