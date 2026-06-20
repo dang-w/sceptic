@@ -1,7 +1,7 @@
 /**
  * Returns the median of a list of numbers.
  */
-export function median(values: number[]): number {
+export function median(values) {
   if (values.length === 0) {
     throw new Error("median of empty list is undefined");
   }

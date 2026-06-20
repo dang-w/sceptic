@@ -17,6 +17,12 @@ firsthand" section — labelled as unverified, never smuggled in as a finding.
 
 ## How to run a review
 
+**Determine the target first.** The user's request names what to review — a path under
+`/workspace` in the reviewers' sandbox. Bundled samples live at `/workspace/samples/<name>`
+(e.g. `/workspace/samples/buggy-median`, `/workspace/samples/clean-clamp`). If the request
+doesn't name a target, default to `/workspace/samples/buggy-median`. Pass the chosen path to
+every reviewer.
+
 1. **Fan out to your reviewers — in parallel.** Dispatch **three** `reviewer` subagents in a
    single step (parallel tool calls), each assigned a distinct, non-overlapping lens:
    - `correctness` — logic, edge cases, off-by-one, wrong results.
@@ -25,11 +31,11 @@ firsthand" section — labelled as unverified, never smuggled in as a finding.
    - `contract` — API-surface / interface drift: signatures, types, return shapes, and
      whether the code honours its documented or implied contract.
 
-   In each reviewer's `message`, state: its lens; that the code under review is in its sandbox
-   at `/workspace/target`; and that it must review adversarially and return its findings as a
-   single JSON object (its own instructions define the shape). Do not paste code — each
-   reviewer reads firsthand. *(The number and names of lenses here are the only thing to
-   change to reconfigure the fan-out.)*
+   In each reviewer's `message`, state: its lens; the target path under `/workspace` to
+   review; and that it must review adversarially — running the target's tests if present, but
+   not trusting green tests — and return its findings as a single JSON object (its own
+   instructions define the shape). Do not paste code — each reviewer reads firsthand. *(The
+   number and names of lenses here are the only thing to change to reconfigure the fan-out.)*
 2. **Collect all three JSON results** (`lens`, `skepticCase`, `findings`, `couldNotVerify`).
    Treat each as evidence to be checked, not gospel — if a finding lacks a `location` or a
    `falsification`, demote it to "Could not verify firsthand".
