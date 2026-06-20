@@ -1,0 +1,49 @@
+name: evals
+
+# Model-graded eval sweep: scores the skeptic's catch-rate and
+# false-positive-rate against the museum. This runs real opus+sonnet reviews in
+# a Docker sandbox, so it costs API credits and is therefore MANUAL
+# (workflow_dispatch), not per-push. Requires an ANTHROPIC_API_KEY repo secret.
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "Eval ids/dirs to run (space-separated; blank = all)"
+        required: false
+        default: ""
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+
+      - name: Build the agent
+        run: npm exec -- eve build
+
+      # Evals run through the production server (eve start), which resolves the
+      # direct-provider model import that the dev runtime cannot.
+      - name: Run eval sweep against the local server
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm exec -- eve start > /tmp/server.log 2>&1 &
+          for _ in $(seq 1 40); do
+            curl -s -o /dev/null http://127.0.0.1:3000/ && break
+            sleep 2
+          done
+          npm exec -- eve eval --strict --url http://127.0.0.1:3000 ${{ github.event.inputs.ids }}
+
+      - name: Upload eval artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: |
+            .eve/junit.xml
+            .eve/evals/
+          if-no-files-found: ignore

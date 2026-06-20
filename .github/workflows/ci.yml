@@ -1,0 +1,36 @@
+name: ci
+
+# Free checks that need no model credits: the agent compiles, the build
+# succeeds, every museum fixture's own suite passes (green-but-incomplete), and
+# the eval suite is discoverable. The model-graded eval sweep lives in
+# evals.yml (manual dispatch) because it costs API credits.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build the agent
+        run: npm exec -- eve build
+
+      - name: Museum fixtures' own suites pass (green-but-incomplete)
+        run: |
+          for d in agent/subagents/reviewer/sandbox/workspace/museum/*/; do
+            echo "== $d =="
+            ( cd "$d" && node --test )
+          done
+
+      - name: Eval suite is discoverable
+        run: npm exec -- eve eval --list
