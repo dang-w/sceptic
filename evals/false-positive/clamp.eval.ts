@@ -2,7 +2,7 @@ import { defineEval } from "eve/evals";
 import { matches } from "eve/evals/expect";
 import { z } from "zod";
 
-// False-positive discipline: on correct code, the skeptic must not invent a
+// False-positive discipline: on correct code, the sceptic must not invent a
 // high-severity defect. We assert the synthesised report contains no [HIGH]
 // finding. (A correctly-rated low-severity edge-case note is acceptable.)
 export default defineEval({

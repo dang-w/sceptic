@@ -1,6 +1,6 @@
 name: evals
 
-# Model-graded eval sweep: scores the skeptic's catch-rate and
+# Model-graded eval sweep: scores the sceptic's catch-rate and
 # false-positive-rate against the museum. This runs real opus+sonnet reviews in
 # a Docker sandbox, so it costs API credits and is therefore MANUAL
 # (workflow_dispatch), not per-push. Requires an ANTHROPIC_API_KEY repo secret.

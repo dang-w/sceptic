@@ -1,7 +1,7 @@
 # Shared helpers for the sceptic verification scripts. Source this; don't run it.
 # shellcheck shell=bash
 
-REPO="/Users/dan/code/sceptic"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BASE="http://127.0.0.1:3000"
 PORT=3000
 SERVER_LOG="/tmp/sceptic-server.log"

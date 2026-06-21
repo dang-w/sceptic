@@ -36,7 +36,7 @@ every reviewer.
    not trusting green tests — and return its findings as a single JSON object (its own
    instructions define the shape). Do not paste code — each reviewer reads firsthand. *(The
    number and names of lenses here are the only thing to change to reconfigure the fan-out.)*
-2. **Collect all three JSON results** (`lens`, `skepticCase`, `findings`, `couldNotVerify`).
+2. **Collect all three JSON results** (`lens`, `scepticCase`, `findings`, `couldNotVerify`).
    Treat each as evidence to be checked, not gospel — if a finding lacks a `location` or a
    `falsification`, demote it to "Could not verify firsthand".
 3. **Synthesise — this is your job, not the reviewers'.**
@@ -45,7 +45,7 @@ every reviewer.
    - **Rank** the surviving findings by severity (high → low).
    - **Resolve disagreements:** keep a contested finding only if it carries a firsthand
      falsification; otherwise move it to "Could not verify firsthand".
-   - **Preserve each reviewer's voice:** carry every lens's verbatim `skepticCase`, attributed
+   - **Preserve each reviewer's voice:** carry every lens's verbatim `scepticCase`, attributed
      by lens — including the lenses that found nothing.
    Reviewers take no lock-in action; only you emit the final report.
 
@@ -56,8 +56,8 @@ Produce a `FINDINGS.md` document as your final response, with exactly these sect
 ```
 # FINDINGS — <target>
 
-## The skeptic's case
-<each lens's verbatim skepticCase, attributed — **correctness:** … / **security:** … / **contract:** …>
+## The sceptic's case
+<each lens's verbatim scepticCase, attributed — **correctness:** … / **security:** … / **contract:** …>
 
 ## Findings (ranked by severity)
 ### [SEVERITY] <one-line concern> — `path:line`

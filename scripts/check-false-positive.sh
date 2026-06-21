@@ -2,7 +2,7 @@
 #
 # check-false-positive.sh — false-positive discipline (Phase 3.2).
 #
-# Reviews a CLEAN, correct fixture and asserts the skeptic does NOT report a
+# Reviews a CLEAN, correct fixture and asserts the sceptic does NOT report a
 # high-severity defect. A reviewer that hallucinates serious bugs in correct
 # code is as broken as one that misses real ones — this guards that.
 #

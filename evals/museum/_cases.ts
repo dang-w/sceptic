@@ -4,7 +4,7 @@ import { defineEval } from "eve/evals";
 // shipped tests PASS but whose implementation is wrong in a way provable by a
 // firsthand probe (see the fixtures under
 // agent/subagents/reviewer/sandbox/workspace/museum/). The `defect` regex is the
-// held-out ground truth: a concept the skeptic's report must mention if it
+// held-out ground truth: a concept the sceptic's report must mention if it
 // actually understood the bug — it is intentionally NOT seeded into the sandbox.
 
 interface CaseSpec {
@@ -43,7 +43,7 @@ export const MUSEUM = {
 export function museumEval(name: keyof typeof MUSEUM) {
   const spec = MUSEUM[name];
   return defineEval({
-    description: `museum/${name}: skeptic catches "${spec.summary}"`,
+    description: `museum/${name}: sceptic catches "${spec.summary}"`,
     async test(t) {
       await t.send(
         `Run a review of /workspace/museum/${name} and produce the FINDINGS.md report.`,
