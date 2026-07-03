@@ -1,5 +1,7 @@
 # sceptic
 
+*This repo is one of two small experiments written up in [Don't take the model's word for it](https://www.danwalsh.co/blog/dont-take-the-models-word-for-it).*
+
 A small, open-source [eve](https://github.com/vercel/eve) agent that runs a **read-only
 adversarial code review** — and treats **verification as a primitive**, not an afterthought.
 
