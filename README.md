@@ -5,6 +5,12 @@
 A small, open-source [eve](https://github.com/vercel/eve) agent that runs a **read-only
 adversarial code review** — and treats **verification as a primitive**, not an afterthought.
 
+On its bundled test set - six plausible-but-wrong modules whose own tests pass, plus one
+correct module as a false-positive check - the reviewer named the real defect in 6 of 6 and
+raised no high-severity finding on the correct one (re-run September 2026). Seven cases is a
+demonstration: it reviews only that bundled set, so this is a proof of approach, not a usable
+reviewer. More on the approach at [danwalsh.co](https://www.danwalsh.co/projects).
+
 A coordinator fans out parallel review subagents. Each one reads the target code firsthand in
 an isolated sandbox, **runs the actual test suite but refuses to trust a green result**, and
 grounds every claim in a `path:line` it read plus a falsifying observation. The coordinator
