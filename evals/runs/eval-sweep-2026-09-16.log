@@ -1,0 +1,19 @@
+# Sceptic eval sweep, run firsthand 2026-09-16 by Claude Code in ~/code/sceptic at commit a899fd8.
+# Node v24.17.0 (nvm), Docker running, `npx eve build` then `npx eve start` then `npx eve eval --url http://127.0.0.1:3000`.
+# Six museum cases (plausible-but-wrong modules whose own tests pass) plus one false-positive case (correct code).
+
+EVALS 7
+target http://127.0.0.1:3000
+
+✓  false-positive/clamp  gates 3/3
+✓  museum/dedupe  gates 3/3
+✓  museum/merge-config  gates 3/3
+✓  museum/parse-range  gates 3/3
+✓  museum/sort-ascending  gates 3/3
+✓  museum/retry-backoff  gates 3/3
+✓  museum/truncate  gates 3/3
+
+Results: 7 passed (7 total)
+Gates: 21 passed
+
+Completed in 6m 24s

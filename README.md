@@ -7,7 +7,8 @@ adversarial code review** - and treats **verification as a primitive**, not an a
 
 On its bundled test set - six plausible-but-wrong modules whose own tests pass, plus one
 correct module as a false-positive check - the reviewer named the real defect in 6 of 6 and
-raised no high-severity finding on the correct one (re-run September 2026). Seven cases is a
+raised no high-severity finding on the correct one (re-run September 2026; the run record is
+[`evals/runs/eval-sweep-2026-09-16.log`](evals/runs/eval-sweep-2026-09-16.log)). Seven cases is a
 demonstration: it reviews only that bundled set, so this is a proof of approach, not a usable
 reviewer. More on the approach at [danwalsh.co](https://www.danwalsh.co/projects).
 
